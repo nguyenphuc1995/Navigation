@@ -19,11 +19,6 @@ Navigation navigation;
 navigation = new Navigation(this, googleMap,mode,GoogleApiDirectionKey);
 //mode: 0 vietnamese, 1 english, 2 just direction by maneuver;
 
-
-Step 2: Override 2 method:
-public void onLocationChanged(Location location); //The method will call if current location change
-public void onDirectionFinderSuccess(); //The method will call if direction finder sucess and you can start navagation.
-
 Step 3: Find direction with start place and destination place
 navigationDriving.findDirection(startPlace, destPlace);
 
