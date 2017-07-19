@@ -1,4 +1,4 @@
-package com.example.navigation;
+package com.example.navigation.Controller;
 
 import android.media.MediaPlayer;
 

@@ -1,4 +1,4 @@
-package com.example.navigation;
+package com.example.navigation.Model;
 
 /**
  * Created by phuc on 7/16/17.
@@ -7,6 +7,8 @@ package com.example.navigation;
 import android.os.AsyncTask;
 
 
+import com.example.navigation.Controller.Detectpolyline;
+import com.example.navigation.View.DirectionFinderListener;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;

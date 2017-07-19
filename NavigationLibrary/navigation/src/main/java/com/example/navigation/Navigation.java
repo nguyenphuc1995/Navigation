@@ -2,21 +2,23 @@ package com.example.navigation;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.navigation.Controller.Detectpolyline;
+import com.example.navigation.Controller.DirectionFinder;
+import com.example.navigation.Controller.QueueArray;
+import com.example.navigation.Model.Route;
+import com.example.navigation.Model.Station;
+import com.example.navigation.View.DirectionFinderListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -40,7 +42,7 @@ import java.util.List;
 //import com.niw.utility.DebugLog;
 
 
-class Navigation extends FragmentActivity implements  DirectionFinderListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class Navigation extends FragmentActivity implements DirectionFinderListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private GoogleApiClient googleApiClient;
     private Activity activity;
     private GoogleMap mMap;
@@ -64,9 +66,7 @@ class Navigation extends FragmentActivity implements  DirectionFinderListener, G
 
 
 
-    public Navigation(Activity activity, GoogleMap googleMap, String Start, String End, int mode, String googleDirectionAPIKey) {
-        this.Start = Start;
-        this.End = End;
+    public Navigation(Activity activity, GoogleMap googleMap, int mode, String googleDirectionAPIKey) {
         this.mode = mode;
         this.activity = activity;
         this.mMap = googleMap;
@@ -74,7 +74,7 @@ class Navigation extends FragmentActivity implements  DirectionFinderListener, G
     }
 
 
-    public void FindDirection()
+    public void FindDirection(String Start, String End)
     {
         try {
                     new DirectionFinder(Navigation.this, Start, End, mode).execute();
