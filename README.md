@@ -17,15 +17,19 @@ Step 1: New Navigation object
 Navigation navigation;
 
 navigation = new Navigation(this, googleMap,mode,GoogleApiDirectionKey);
+
 //mode: 0 vietnamese, 1 english, 2 just direction by maneuver;
 
 Step 3: Find direction with start place and destination place
-navigationDriving.findDirection(startPlace, destPlace);
+
+navigation.findDirection(startPlace, destPlace);
 
 Step 4: After find direction you can start navigation diriving
+
 navigation.startNavigation();
  
 Step 5: If you want to stop navigation diriving, you can use method
+
 Navigation.stopNavigation();
 
 ```
