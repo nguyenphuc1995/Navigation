@@ -19,14 +19,16 @@ Navigation navigation;
 navigation = new Navigation(this, googleMap,mode,GoogleApiDirectionKey);
 
 //googleMap is a GoogleMap object.
+
 //mode: 0 vietnamese, 1 english, 2 just direction by maneuver.
+
 //GoogleApiDirectionKey is a String content googleApiDirectionKey.
 
 Step 3: Find direction with start place and destination place
 
 navigation.findDirection(startPlace, destPlace);
 
-//startPlace and dest Place are String objects.
+//startPlace and destPlace are String objects.
 
 Step 4: After find direction you can start navigation diriving
 
