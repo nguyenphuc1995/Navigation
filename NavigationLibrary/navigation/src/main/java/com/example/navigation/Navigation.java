@@ -49,15 +49,12 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
     private int interval = 0;
     private int connect = 0;
     private int mode = 1; //0 Vi, 1 En, 2 maneuver
-    private Button btnFindPath,btnStart;
     //private String Start = "Siêu Thị Vitamin Care, Phường 15, Ho Chi Minh, Vietnam", End = "279 Điện Biên Phủ, Phường 15, Bình Thạnh, Hồ Chí Minh, Vietnam";
     //private String Start ="10.780768, 106.684992", End = "10.774649, 106.678962";
     private String Start = "ben xe mien Dong", End = "ben xe mien Tay";
     private static Location newLocation, preLocation;
-
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
-    private List<Marker> stationMarkers = new ArrayList<>();
     private List<Polyline> Paths = new ArrayList<>();
     private List<Station> stations;
     private List<Detectpolyline> detectWrongWay;
@@ -77,18 +74,27 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
     public void FindDirection(String Start, String End)
     {
         try {
-                    new DirectionFinder(Navigation.this, Start, End, mode).execute();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+            new DirectionFinder(Navigation.this, Start, End, mode).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
     public void StartNavigation() {
-                buildGoogleApiClient();
+        buildGoogleApiClient();
 
-            }
+    }
     public void StopNavigation()
     {
-        StopGoogleApiClient();
+        if (googleApiClient.isConnected())
+        {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            StopGoogleApiClient();
+        }
+        if (newLocation != null)
+        {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLocation.getLatitude(), newLocation.getLongitude()), 18));
+            goToLocation(newLocation.getLatitude(),newLocation.getLongitude(),18,0,0);
+        }
     }
     @Override
     public void onDirectionFinderSuccess(List<Route> routes, List<Station> stations, List<Detectpolyline> detectpolylines) {
@@ -180,11 +186,11 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
         }
         return;
     }
-   public void DectectWrongWay(LatLng currentLocation)
+    public void DectectWrongWay(LatLng currentLocation)
     {
         for (int i = 1; i < detectWrongWay.size(); i++)
         {
-             if (detectWrongWay.get(i).status == 1)
+            if (detectWrongWay.get(i).status == 1)
             {
 
                 if (getDistance(currentLocation,detectWrongWay.get(i).polyline)<20)
@@ -208,7 +214,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
                 if ((tmp - distanceAccept) > 100)
                 {
                     //tts.speak(mode,"Wrong way");
-                    Toast.makeText(Navigation.this,"Wrong way",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,"Wrong way",Toast.LENGTH_SHORT).show();
 //                    String start = Double.toString(currentLocation.latitude) + "," + Double.toString(currentLocation.longitude);
 //                    StopGoogleApiClient();
 //                    try {
@@ -269,7 +275,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
     protected synchronized void buildGoogleApiClient() {
 
         if (connect == 0){
-            googleApiClient = new GoogleApiClient.Builder(this)
+            googleApiClient = new GoogleApiClient.Builder(activity)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
@@ -296,7 +302,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
         locationRequest.setInterval(500);
         locationRequest.setFastestInterval(500);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ActivityCompat.checkSelfPermission(this,
+        if (ActivityCompat.checkSelfPermission(activity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -318,7 +324,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
     public void onLocationChanged(Location location) {
         interval++;
         if (location == null) {
-            Toast.makeText(Navigation.this, "Can't get current location!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Can't get current location!", Toast.LENGTH_SHORT).show();
         }
         else {
             if (preLocation == null) {
@@ -343,6 +349,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(ll);
         mMap.moveCamera(cameraUpdate);
     }
+
 
 
 
