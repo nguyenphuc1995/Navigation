@@ -13,10 +13,15 @@ https://www.youtube.com/watch?v=StjwFeSzzl4
 ## Usage
 If you have already the Google map object:
 ```
-Step 1: New Navigation object
-Navigation navigation;
+Step 1: New GLOBAL Navigation object
 
-navigation = new Navigation(this, googleMap,mode,GoogleApiDirectionKey);
+Navigation navigation = new Navigation;
+
+//dont new Navigation once again
+
+Step 2: Set some objects
+
+navigation.setData(this,googlemap,mode,GoogleApiDirectionKey)
 
 //this is your activity.
 
