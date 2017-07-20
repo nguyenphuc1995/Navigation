@@ -18,6 +18,8 @@ Navigation navigation;
 
 navigation = new Navigation(this, googleMap,mode,GoogleApiDirectionKey);
 
+//this is your activity.
+
 //googleMap is a GoogleMap object.
 
 //mode: 0 vietnamese, 1 english, 2 just direction by maneuver.
