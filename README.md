@@ -78,11 +78,11 @@ Navigation.stopNavigation();
 
 ```
 ## Note
-### The project have a bug: when you drive at high speed (>50km/h at roundabout and >90km/h at strstraight). The function DetectWrongWay will return wrong result. 
-
+*The project have a bug: when you drive at high speed (>50km/h at roundabout and >90km/h at straight). The function DetectWrongWay will return wrong result.* 
+*This is not final version*
 ## Authors
 
-Nguyen Huu Phuc (https://github.com/nguyenphuc1995/)
+Nguyen Huu Phuc (https://github.com/nguyenphuc1995)
 
 ## License
 --------
