@@ -8,7 +8,7 @@ A step by step series of examples that tell you have to get the library:
 Download it and import as a module
 If you dont know how to do this, please watch this video below:
 https://www.youtube.com/watch?v=StjwFeSzzl4
-```
+
 
 ## Changelog
 
@@ -17,8 +17,9 @@ https://www.youtube.com/watch?v=StjwFeSzzl4
 
 ## Usage
 
-If you have already the Google map object:
 ```
+If you have already the Google map object:
+
 Step 1: New GLOBAL Navigation object
 
 Navigation navigation = new Navigation;
