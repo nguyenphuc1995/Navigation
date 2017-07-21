@@ -10,7 +10,13 @@ If you dont know how to do this, please watch this video below:
 https://www.youtube.com/watch?v=StjwFeSzzl4
 ```
 
+## Changelog
+
+[21/07/17]
+    - fix bug 
+
 ## Usage
+
 If you have already the Google map object:
 ```
 Step 1: New GLOBAL Navigation object
