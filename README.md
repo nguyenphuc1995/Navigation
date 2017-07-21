@@ -3,12 +3,36 @@
 
 ## Installation
 
-A step by step series of examples that tell you have to get the library:
+**Option 1:**
+
+Step 1. Add the JitPack repository to your build file
+
+Add it in your root build.gradle at the end of repositories:
+
+```
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+Step 2. Add the dependency
+```
+	dependencies {
+	        compile 'com.github.nguyenphuc1995:navigation:1.0'
+	}
+
+```
+
+**Option 2:**
 
 Download it and import as a module
+```
 If you dont know how to do this, please watch this video below:
 https://www.youtube.com/watch?v=StjwFeSzzl4
-
+```
 
 ## Changelog
 
