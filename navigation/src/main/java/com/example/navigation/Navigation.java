@@ -6,10 +6,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -60,6 +65,8 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
     private List<Detectpolyline> detectWrongWay;
     private QueueArray queueArray = new QueueArray();
     private String googleDirectionAPIKey;
+    private Marker mPositionMarker;
+    private MarkerOptions markerOptions = new MarkerOptions();
 
 
     public void setData(Activity activity, GoogleMap googleMap, int mode, String googleDirectionAPIKey) {
@@ -336,6 +343,19 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
             }
             newLocation = location;
             //
+            if (mPositionMarker == null) {
+
+                mPositionMarker = mMap.addMarker(new MarkerOptions()
+                        .flat(true)
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.gps))
+                        .anchor(0.5f, 0.5f)
+                        .position(
+                                new LatLng(location.getLatitude(), location
+                                        .getLongitude())));
+            }
+
+            animateMarker(mPositionMarker, location);
             if (stations != null) {
                 setArlet(new LatLng(newLocation.getLatitude(), newLocation.getLongitude()), stations);
                 DectectWrongWay(new LatLng(newLocation.getLatitude(), newLocation.getLongitude()));
@@ -353,7 +373,44 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(ll);
         mMap.moveCamera(cameraUpdate);
     }
+    public int getConnect()
+    {
+        return this.connect;
+    }
+    public void animateMarker(final Marker marker, final Location location) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        final LatLng startLatLng = marker.getPosition();
+        final double startRotation = marker.getRotation();
+        final long duration = 500;
 
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+
+                double lng = t * location.getLongitude() + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * location.getLatitude() + (1 - t)
+                        * startLatLng.latitude;
+
+                float rotation = (float) (t * location.getBearing() + (1 - t)
+                        * startRotation);
+
+                marker.setPosition(new LatLng(lat, lng));
+                marker.setRotation(rotation);
+
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+    }
 
 
 
