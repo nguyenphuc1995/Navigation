@@ -63,7 +63,8 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
 
 
 
-    public Navigation(Activity activity, GoogleMap googleMap, int mode, String googleDirectionAPIKey) {
+
+    public void setData(Activity activity, GoogleMap googleMap, int mode, String googleDirectionAPIKey) {
         this.mode = mode;
         this.activity = activity;
         this.mMap = googleMap;
@@ -71,7 +72,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
     }
 
 
-    public void FindDirection(String Start, String End)
+    public void findDirection(String Start, String End)
     {
         try {
             new DirectionFinder(Navigation.this, Start, End, mode).execute();
@@ -79,16 +80,21 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
             e.printStackTrace();
         }
     }
-    public void StartNavigation() {
+    public void startNavigation() {
+        preLocation = null;
         buildGoogleApiClient();
 
     }
-    public void StopNavigation()
+    public void stopNavigation()
     {
-        if (googleApiClient.isConnected())
+        System.out.println();
+        if (googleApiClient!=null)
         {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            StopGoogleApiClient();
+            if (googleApiClient.isConnected())
+            {
+                LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+                stopGoogleApiClient();
+            }
         }
         if (newLocation != null)
         {
@@ -142,7 +148,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
                 this.stations.get(this.stations.size()-1).maneuver = "thank you";
             }
             Paths.add(mMap.addPolyline(polylineOptions));
-            StopGoogleApiClient();
+
             preLocation = null;
             LatLng current = route.startLocation;
 
@@ -175,7 +181,7 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
                     if (stations.get(stations.size()-1).status == 2)
                     {
                         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
-                        StopGoogleApiClient();
+                        stopGoogleApiClient();
                         //Toast.makeText(MapsActivity.this,"mai di hoc",Toast.LENGTH_SHORT).show();
                         goToLocation(stations.get((stations.size()-1)).startStation.latitude,stations.get((stations.size()-1)).startStation.longitude,18,0,0);
                         return;
@@ -287,13 +293,13 @@ public class Navigation extends FragmentActivity implements DirectionFinderListe
 
 
     }
-    protected synchronized void StopGoogleApiClient()
+    protected synchronized void stopGoogleApiClient()
     {
         if (connect ==1 ) {
             googleApiClient.disconnect();
             connect = 0;
         }
-        System.out.println(connect);
+
     }
 
     @Override
