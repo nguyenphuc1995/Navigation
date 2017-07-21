@@ -21,7 +21,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```
 	dependencies {
-	        compile 'com.github.nguyenphuc1995:navigation:1.0.1'
+	        compile 'com.github.nguyenphuc1995:navigation:1.2'
 	}
 
 ```
@@ -38,7 +38,7 @@ https://www.youtube.com/watch?v=StjwFeSzzl4
 
 [20/07/17]
     - fix bug 
-[21/07/17]
+[21/07/17] Ver 1.2
     - Change loction icon
 
 ## Usage
